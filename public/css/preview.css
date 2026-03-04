@@ -1,0 +1,179 @@
+.container {
+    display: flex;
+    gap: 20px;
+}
+
+.left,
+.right {
+    width: 50%;
+    border: 1px solid #e0e0e0;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.left:hover,
+.right:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    border-color: #d0d0d0;
+}
+
+.right {
+    background: #f7f7f7;
+}
+
+/* form element */
+input,
+select,
+textarea,
+button {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+    border-color: #d0d0d0;
+}
+
+button {
+    cursor: pointer;
+    background-color: #4f46e5;
+    color: white;
+    font-weight: 500;
+    border: none;
+}
+
+button:hover {
+    background-color: #4338ca;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+/* biar textarea ga aneh */
+textarea {
+    resize: vertical;
+}
+
+/* hidden helper */
+.hidden {
+    display: none;
+}
+
+.preview-img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.info-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* CENTER horizontal */
+    text-align: center; /* teks ikut center */
+    margin-bottom: 20px;
+}
+
+.logo {
+    max-width: 230px;
+    margin-bottom: 10px;
+}
+
+.info-text p {
+    margin-left: 650px;
+}
+
+/* PRINT STYLES */
+@media print {
+    /* ukuran kertas */
+    @page {
+        size: A4;
+        margin: 2cm;
+    }
+    /* sembunyikan semua */
+    body * {
+        visibility: hidden;
+    }
+
+    /* tampilkan hanya preview */
+    .right,
+    .right * {
+        visibility: visible;
+    }
+
+    /* MATIKAN LAYOUT WEB */
+    .container {
+        display: block !important;
+    }
+
+    .left {
+        display: none !important;
+    }
+
+    /* RESET TOTAL STYLE RIGHT */
+    .right {
+        position: static !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        background: white !important;
+        box-shadow: none !important;
+    }
+
+    /* rapihin teks */
+    h4 {
+        margin: 10px 0 4px;
+        font-size: 14px;
+    }
+
+    p {
+        margin: 6px 0;
+        font-size: 12px;
+        line-height: 1.4;
+    }
+
+    .info-text p {
+        margin-left: 450px;
+    }
+
+    hr {
+        margin: 8px 0;
+    }
+
+    /* logo */
+    .logo {
+        max-width: 140px;
+        display: block;
+        margin: 0 auto 10px auto;
+    }
+
+    /* hilangkan tombol */
+    .form-actions,
+    button {
+        display: none !important;
+    }
+}
