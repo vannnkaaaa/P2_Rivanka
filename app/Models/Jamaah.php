@@ -48,9 +48,13 @@ class Jamaah extends Model
     return $this->belongsTo(Agents::class, 'agent_id');
   }
 
+  public function package()
+  {
+    return $this->belongsTo(\App\Models\Package::class, 'package_id');
+  }
+
   public function agentName()
   {
     return $this->agent ? $this->agent->name : 'Admin';
   }
-  
 }

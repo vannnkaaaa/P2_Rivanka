@@ -15,36 +15,39 @@
     </div>
 
     @php
-        $jamaah  = auth()->user()->jamaah ?? null;
-        $person  = $jamaah->people ?? null;
-        $nama    = $person->fullname ?? auth()->user()->username;
-        $package = $jamaah->package ?? null;
-        $group   = $jamaah->group ?? null;
+    $user = auth()->user();
+    $person = $user->userable; // ambil dari userable (People)
+    $nama = $person->fullname ?? $user->username;
 
-        $payments  = $jamaah?->payments ?? collect();
-        $totalPaid = $payments->where('status','paid')->sum('amount');
-        $allPaid   = $payments->count() > 0 && $payments->every(fn($p) => $p->status === 'paid');
-        $hasPaid   = $totalPaid > 0;
-        $payLabel  = $allPaid ? 'Lunas' : ($hasPaid ? 'DP' : 'Belum Bayar');
-        $payBadge  = $allPaid ? 'success' : ($hasPaid ? 'warning' : 'danger');
+    // Cari jamaah via people_id
+    $jamaah = $person ? \App\Models\Jamaah::where('people_id', $person->id)->first() : null;
+    $package = $jamaah?->package ?? null;
+    $group = $jamaah?->group ?? null;
 
-        $statusMap = [
-            'draft'              => ['label' => 'Draft',              'badge' => 'secondary'],
-            'booked'             => ['label' => 'Terdaftar',          'badge' => 'info'],
-            'paid'               => ['label' => 'Lunas',              'badge' => 'primary'],
-            'documents_verified' => ['label' => 'Dokumen Verified',   'badge' => 'warning'],
-            'ready'              => ['label' => 'Siap Berangkat',     'badge' => 'success'],
-            'departed'           => ['label' => 'Sudah Berangkat',    'badge' => 'dark'],
-        ];
-        $stKey   = $jamaah->status ?? 'draft';
-        $stLabel = $statusMap[$stKey]['label'] ?? ucfirst($stKey);
-        $stBadge = $statusMap[$stKey]['badge'] ?? 'secondary';
+    $payments = $jamaah?->payments ?? collect();
+    $totalPaid = $payments->where('status','paid')->sum('amount');
+    $allPaid = $payments->count() > 0 && $payments->every(fn($p) => $p->status === 'paid');
+    $hasPaid = $totalPaid > 0;
+    $payLabel = $allPaid ? 'Lunas' : ($hasPaid ? 'DP' : 'Belum Bayar');
+    $payBadge = $allPaid ? 'success' : ($hasPaid ? 'warning' : 'danger');
 
-        $departure = $jamaah?->departure_date
-            ? \Carbon\Carbon::parse($jamaah->departure_date)
-            : null;
-        $hariLagi = $departure ? now()->diffInDays($departure, false) : null;
-    @endphp
+    $statusMap = [
+    'draft' => ['label' => 'Draft', 'badge' => 'secondary'],
+    'booked' => ['label' => 'Terdaftar', 'badge' => 'info'],
+    'paid' => ['label' => 'Lunas', 'badge' => 'primary'],
+    'documents_verified' => ['label' => 'Dokumen Verified', 'badge' => 'warning'],
+    'ready' => ['label' => 'Siap Berangkat', 'badge' => 'success'],
+    'departed' => ['label' => 'Sudah Berangkat', 'badge' => 'dark'],
+    ];
+    $stKey = $jamaah->status ?? 'draft';
+    $stLabel = $statusMap[$stKey]['label'] ?? ucfirst($stKey);
+    $stBadge = $statusMap[$stKey]['badge'] ?? 'secondary';
+
+    $departure = $jamaah?->departure_date
+    ? \Carbon\Carbon::parse($jamaah->departure_date)
+    : null;
+    $hariLagi = $departure ? now()->diffInDays($departure, false) : null;
+    @endphp 
 
     {{-- Welcome Banner --}}
     <div class="alert border-0 mb-4" style="background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;">
@@ -151,7 +154,11 @@
                             <td class="text-muted small">Email</td>
                             <td class="small">{{ auth()->user()->email }}</td>
                         </tr>
-                        <tr><td colspan="2"><hr class="my-1"></td></tr>
+                        <tr>
+                            <td colspan="2">
+                                <hr class="my-1">
+                            </td>
+                        </tr>
                         <tr>
                             <td class="text-muted small">Paket</td>
                             <td class="small font-weight-semibold">{{ $package->name ?? '-' }}</td>
@@ -244,7 +251,9 @@
                                     </td>
                                 </tr>
                                 @empty
-                                <tr><td colspan="4" class="text-center text-muted py-3">Belum ada pembayaran</td></tr>
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted py-3">Belum ada pembayaran</td>
+                                </tr>
                                 @endforelse
                             </tbody>
                             @if($payments->count() > 0)

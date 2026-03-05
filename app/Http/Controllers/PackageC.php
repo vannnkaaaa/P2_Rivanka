@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Package;
+use Illuminate\Support\Facades\Auth;
 use App\Models\PackageDetail;
 use App\Models\PackageItinerary;
 
@@ -14,9 +15,15 @@ class PackageC extends Controller
   {
     $query = Package::with(['detail', 'itineraries']);
 
-    // kalau type ada, filter
     if ($type) {
       $query->where('type', $type);
+    }
+
+    // Jemaah hanya lihat yang published
+    $user  = Auth::user();
+    $roles = $user->roles->pluck('name')->toArray();
+    if (in_array('jemaah', $roles)) {
+      $query->where('status', 'published');
     }
 
     $packages = $query->paginate(9);

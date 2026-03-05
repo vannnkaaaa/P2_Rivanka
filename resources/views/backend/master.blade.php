@@ -30,142 +30,142 @@
         <div id="wrapper">
             <!-- ========== Left Sidebar Start ========== -->
             <div class="left side-menu">
-    <button type="button" class="button-menu-mobile button-menu-mobile-topbar open-left waves-effect">
-        <i class="ion-close"></i>
-    </button>
+                <button type="button" class="button-menu-mobile button-menu-mobile-topbar open-left waves-effect">
+                    <i class="ion-close"></i>
+                </button>
 
-    <!-- LOGO -->
-    <div class="topbar-left">
-        <div class="text-center">
-            <a href="#" class="logo">
-                <i class="mdi mdi-assistant"></i> Rivanka
-            </a>
-        </div>
-    </div>
-
-    <div class="sidebar-inner slimscrollleft">
-        <div id="sidebar-menu">
-            <ul>
-
-                @auth
-                @php
-                    $roles    = auth()->user()->roles->pluck('name')->toArray();
-                    $isAdmin  = in_array('admin',  $roles);
-                    $isAgent  = in_array('agent',  $roles);
-                    $isJemaah = in_array('jemaah', $roles);
-                @endphp
-
-                {{-- ── DASHBOARD sesuai role ── --}}
-                <li class="menu-title">Dashboard</li>
-
-                @if($isAdmin)
-                    <li>
-                        <a href="{{ route('admin.dashboard') }}" class="waves-effect">
-                            <i class="mdi mdi-airplay"></i> <span>Dashboard</span>
+                <!-- LOGO -->
+                <div class="topbar-left">
+                    <div class="text-center">
+                        <a href="#" class="logo">
+                            <i class="mdi mdi-assistant"></i> Rivanka
                         </a>
-                    </li>
-                @elseif($isAgent)
-                    <li>
-                        <a href="{{ route('agent.dashboard') }}" class="waves-effect">
-                            <i class="mdi mdi-airplay"></i> <span>Dashboard</span>
-                        </a>
-                    </li>
-                @elseif($isJemaah)
-                    <li>
-                        <a href="{{ route('jemaah.dashboard') }}" class="waves-effect">
-                            <i class="mdi mdi-airplay"></i> <span>Dashboard</span>
-                        </a>
-                    </li>
-                @endif
+                    </div>
+                </div>
 
-                {{-- ── ADMIN ONLY ── --}}
-                @if($isAdmin)
-                    <li class="has_sub">
-                        <a href="javascript:void(0);" class="waves-effect">
-                            <i class="mdi mdi-layers"></i>
-                            <span>Management User</span>
-                            <span class="float-right"><i class="mdi mdi-chevron-right"></i></span>
-                        </a>
-                        <ul class="list-unstyled">
-                            <li><a href="{{ route('agent.tabel') }}">Agent</a></li>
-                            <li><a href="{{ route('jemaah.tabel') }}">Jemaah</a></li>
-                        </ul>
-                    </li>
+                <div class="sidebar-inner slimscrollleft">
+                    <div id="sidebar-menu">
+                        <ul>
 
-                    <li class="has_sub">
-                        <a href="javascript:void(0);" class="waves-effect">
-                            <i class="mdi mdi-bullseye"></i>
-                            <span>Management Paket</span>
-                            <span class="float-right"><i class="mdi mdi-chevron-right"></i></span>
-                        </a>
-                        <ul class="list-unstyled">
+                            @auth
+                            @php
+                            $userableType = auth()->user()->userable_type;
+                            $isAdmin = $userableType === \App\Models\Admin::class;
+                            $isAgent = $userableType === \App\Models\Agents::class;
+                            $isJemaah = $userableType === \App\Models\People::class;
+                            @endphp
+
+                            {{-- ── DASHBOARD sesuai role ── --}}
+                            <li class="menu-title">Dashboard</li>
+
+                            @if($isAdmin)
                             <li>
-                                <a class="menu-link {{ !request()->route('type') ? 'active' : '' }}"
-                                   href="{{ route('package.tabel') }}">Paket</a>
+                                <a href="{{ route('admin.dashboard') }}" class="waves-effect">
+                                    <i class="mdi mdi-airplay"></i> <span>Dashboard</span>
+                                </a>
                             </li>
-                        </ul>
-                    </li>
-                @endif
-
-                {{-- ── LIST PAKET (admin + agent + jemaah) ── --}}
-                @if($isAdmin || $isAgent || $isJemaah)
-                    <li class="has_sub">
-                        <a href="javascript:void(0);" class="waves-effect">
-                            <i class="mdi mdi-format-list-bulleted"></i>
-                            <span>List Paket</span>
-                            <span class="float-right"><i class="mdi mdi-chevron-right"></i></span>
-                        </a>
-                        <ul class="list-unstyled">
+                            @elseif($isAgent)
                             <li>
-                                <a class="menu-link {{ request()->route('type') == 'umrah' ? 'active' : '' }}"
-                                   href="{{ route('package.tabel', 'umrah') }}">Umrah</a>
+                                <a href="{{ route('agent.dashboard') }}" class="waves-effect">
+                                    <i class="mdi mdi-airplay"></i> <span>Dashboard</span>
+                                </a>
                             </li>
+                            @elseif($isJemaah)
                             <li>
-                                <a class="menu-link {{ request()->route('type') == 'haji' ? 'active' : '' }}"
-                                   href="{{ route('package.tabel', 'haji') }}">Haji</a>
+                                <a href="{{ route('jemaah.dashboard') }}" class="waves-effect">
+                                    <i class="mdi mdi-airplay"></i> <span>Dashboard</span>
+                                </a>
                             </li>
+                            @endif
+
+                            {{-- ── ADMIN ONLY ── --}}
+                            @if($isAdmin)
+                            <li class="has_sub">
+                                <a href="javascript:void(0);" class="waves-effect">
+                                    <i class="mdi mdi-layers"></i>
+                                    <span>Management User</span>
+                                    <span class="float-right"><i class="mdi mdi-chevron-right"></i></span>
+                                </a>
+                                <ul class="list-unstyled">
+                                    <li><a href="{{ route('agent.tabel') }}">Agent</a></li>
+                                    <li><a href="{{ route('jemaah.tabel') }}">Jemaah</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="has_sub">
+                                <a href="javascript:void(0);" class="waves-effect">
+                                    <i class="mdi mdi-bullseye"></i>
+                                    <span>Management Paket</span>
+                                    <span class="float-right"><i class="mdi mdi-chevron-right"></i></span>
+                                </a>
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <a class="menu-link {{ !request()->route('type') ? 'active' : '' }}"
+                                            href="{{ route('package.tabel') }}">Paket</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            @endif
+
+                            {{-- ── LIST PAKET (admin + agent + jemaah) ── --}}
+                            @if($isAdmin || $isAgent || $isJemaah)
+                            <li class="has_sub">
+                                <a href="javascript:void(0);" class="waves-effect">
+                                    <i class="mdi mdi-format-list-bulleted"></i>
+                                    <span>List Paket</span>
+                                    <span class="float-right"><i class="mdi mdi-chevron-right"></i></span>
+                                </a>
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <a class="menu-link {{ request()->route('type') == 'umrah' ? 'active' : '' }}"
+                                            href="{{ route('package.tabel', 'umrah') }}">Umrah</a>
+                                    </li>
+                                    <li>
+                                        <a class="menu-link {{ request()->route('type') == 'haji' ? 'active' : '' }}"
+                                            href="{{ route('package.tabel', 'haji') }}">Haji</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            @endif
+
+                            {{-- ── BOOKING (admin + agent) ── --}}
+                            @if($isAdmin || $isAgent)
+                            <li class="has_sub">
+                                <a href="javascript:void(0);" class="waves-effect">
+                                    <i class="mdi mdi-package-variant"></i>
+                                    <span>Booking</span>
+                                    <span class="float-right"><i class="mdi mdi-chevron-right"></i></span>
+                                </a>
+                                <ul class="list-unstyled">
+                                    <li><a href="#">Semua Booking</a></li>
+                                </ul>
+                            </li>
+                            @endif
+
+                            {{-- ── LOGOUT ── --}}
+                            <li class="menu-title">Akun</li>
+                            <li>
+                                <a href="#" class="waves-effect"
+                                    onclick="event.preventDefault(); document.getElementById('logout-form-sidebar').submit();"
+                                    style="color:#f46a6a;">
+                                    <i class="mdi mdi-logout" style="color:#f46a6a;"></i>
+                                    <span>Logout</span>
+                                </a>
+                                <form id="logout-form-sidebar" method="POST"
+                                    action="{{ route('logout') }}" style="display:none;">
+                                    @csrf
+                                </form>
+                            </li>
+
+                            @endauth
+
                         </ul>
-                    </li>
-                @endif
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!-- end sidebar-inner -->
 
-                {{-- ── BOOKING (admin + agent) ── --}}
-                @if($isAdmin || $isAgent)
-                    <li class="has_sub">
-                        <a href="javascript:void(0);" class="waves-effect">
-                            <i class="mdi mdi-package-variant"></i>
-                            <span>Booking</span>
-                            <span class="float-right"><i class="mdi mdi-chevron-right"></i></span>
-                        </a>
-                        <ul class="list-unstyled">
-                            <li><a href="#">Semua Booking</a></li>
-                        </ul>
-                    </li>
-                @endif
-
-                {{-- ── LOGOUT ── --}}
-                <li class="menu-title">Akun</li>
-                <li>
-                    <a href="#" class="waves-effect"
-                       onclick="event.preventDefault(); document.getElementById('logout-form-sidebar').submit();"
-                       style="color:#f46a6a;">
-                        <i class="mdi mdi-logout" style="color:#f46a6a;"></i>
-                        <span>Logout</span>
-                    </a>
-                    <form id="logout-form-sidebar" method="POST"
-                          action="{{ route('logout') }}" style="display:none;">
-                        @csrf
-                    </form>
-                </li>
-
-                @endauth
-
-            </ul>
-        </div>
-        <div class="clearfix"></div>
-    </div>
-    <!-- end sidebar-inner -->
-
-</div>
+            </div>
             <!-- Left Sidebar End --><!-- Start right Content here -->
             <div class="content-page">
                 @yield('content')
@@ -192,6 +192,9 @@
         <script src="{{ asset('assets/plugins/morris/morris.min.js') }}"></script>
         <script src="{{ asset('assets/pages/dashborad.js') }}"></script><!-- App js -->
         <script src="{{ asset('assets/js/app.js') }}"></script>
+
+        @stack('scripts')
+        
         <script>
             /* BEGIN SVG WEATHER ICON */
             if (typeof Skycons !== 'undefined') {
