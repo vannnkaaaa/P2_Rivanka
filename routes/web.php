@@ -80,5 +80,12 @@ Route::prefix('package')->name('package.')->group(function () {
     Route::patch('/{type}/{package}/status', [PackageC::class, 'toggleStatus'])->name('set-status');
 });
 
+Route::prefix('booking')->name('booking.')->group(function () {
+    Route::get('/', [BookingC::class, 'index'])->name('tabel');
+    Route::get('/{id}/show', [BookingC::class, 'show'])->name('show');
+    Route::patch('/{id}/status', [BookingC::class, 'updateStatus'])->name('update-status');
+    Route::get('/{type}/{id}', [BookingC::class, 'create'])->name('create');
+    Route::post('/{type}/{id}', [BookingC::class, 'store'])->name('store');
+});
 Route::get('/booking/{type}/{id}', [BookingC::class, 'create'])->name('package.booking');
 Route::post('/booking/{type}/{id}', [BookingC::class, 'store'])->name('booking.store');

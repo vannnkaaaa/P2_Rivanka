@@ -12,8 +12,9 @@ class Jamaah extends Model
     'people_id',
     'agent_id',
     'registration_number',
+    'batch_id', 
     'departure_date',
-    'package_id',
+    'package_id', 
     'status',
     'group_id',
   ];

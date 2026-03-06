@@ -137,7 +137,7 @@
                                     <span class="float-right"><i class="mdi mdi-chevron-right"></i></span>
                                 </a>
                                 <ul class="list-unstyled">
-                                    <li><a href="#">Semua Booking</a></li>
+                                    <li><a href="{{ route('booking.tabel') }}">Semua Booking</a></li>
                                 </ul>
                             </li>
                             @endif
@@ -194,7 +194,7 @@
         <script src="{{ asset('assets/js/app.js') }}"></script>
 
         @stack('scripts')
-        
+
         <script>
             /* BEGIN SVG WEATHER ICON */
             if (typeof Skycons !== 'undefined') {
